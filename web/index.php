@@ -87,6 +87,7 @@ $app->get("/getEmails",function(Request $request) use($app){
             foreach($headers as $headerParts)
             {
                 echo $count.') ';
+                echo $headerParts->name.' - ';
                 echo $headerParts->value;
                 echo '<br>';
                 $count+=1;
