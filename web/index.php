@@ -100,11 +100,12 @@ $app->get("/getEmails",function(Request $request) use($app){
                 }
                 $emailID=$headers[$pos]->value;
                 $response=$userObj->addUser($emailID);
-                if(strpos($response,"USER_AUTHENTICATED")==false)
+                if(strpos($response,"USER_AUTHENTICATED_")==false)
                 {
-                    return $app->redirect("/?err=AUTHENTICATION_FAILURE");
+                    // return $app->redirect("/?err=AUTHENTICATION_FAILURE");
+                    return $response;
                 }
-                $e=explode("USER_AUTHENTICATED",$response);
+                $e=explode("USER_AUTHENTICATED_",$response);
                 $userID=$e[1];
             }
             $pos=NULL;
