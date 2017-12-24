@@ -63,6 +63,7 @@ $app->get("/getEmails",function(Request $request) use($app){
         foreach($list as $listItem)
         {
             $messageID=$listItem->getId();
+            echo $messageID.'<br>';
             $optParamsGet = [];
             $optParamsGet['format'] = 'full'; // Display message in payload
             // $content=$service->users_messages->get('me',$messageID, ['format' => 'metadata', 'metadataHeaders' => ['From','To', 'Subject','Body']]);
