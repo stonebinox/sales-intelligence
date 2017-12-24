@@ -66,7 +66,7 @@ $app->get("/getEmails",function(Request $request) use($app){
             $content=$service->users_messages->get('me',$messageID, ['format' => 'metadata', 'metadataHeaders' => ['From','To', 'Subject']]);
             $messagePayload = $content->getPayload();
             $headers = $messagePayload->getHeaders();
-            var_dump($headers);
+            // var_dump($headers);
             $parts = $content->getPayload()->getParts();
             $body = $parts[0]['body'];
             $rawData = $body->data;
