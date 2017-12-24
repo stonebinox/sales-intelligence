@@ -100,7 +100,7 @@ $app->get("/getEmails",function(Request $request) use($app){
                 }
                 $emailID=$headers[$pos]->value;
                 $response=$userObj->addUser($emailID);
-                if(strpos($response,"USER_AUTHENTICATED_")==false)
+                if(strpos($response,"USER_AUTHENTICATED_")===false)
                 {
                     // return $app->redirect("/?err=AUTHENTICATION_FAILURE");
                     return $response;
