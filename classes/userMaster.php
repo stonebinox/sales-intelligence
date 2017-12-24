@@ -81,7 +81,7 @@ class userMaster
             }
             $userID=$um['iduser_master'];
             $app['session']->set("uid",$userID);
-            return "USER_AUTHENTICATED";
+            return "USER_AUTHENTICATED_".$userID;
         }
         else
         {
