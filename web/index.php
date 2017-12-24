@@ -70,7 +70,7 @@ $app->get("/getEmails",function(Request $request) use($app){
         $user = 'me';
         $optParams = [];
         $optParams['maxResults'] = 100; 
-        $optParams['labelIds'] = 'INBOX'; // Only show messages in Inbox
+        $optParams['labelIds'] = 'SENT'; // Only show messages in Inbox
         $messages = $service->users_messages->listUsersMessages('me',$optParams);
         $list = $messages->getMessages();
         $mailCount=0;
@@ -119,7 +119,7 @@ $app->get("/getEmails",function(Request $request) use($app){
                 }
             }
             echo $headers[$pos]->value.'<br>';
-            
+
             $count=0;
             foreach($headers as $headerParts)
             {
