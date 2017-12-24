@@ -33,7 +33,7 @@ $app->get("/",function() use($app){
 });
 $app->get("/auth",function() use($app){
     $client = new Google_Client();
-    $client->setAuthConfig('client_secret.json');
+    $client->setAuthConfig('../vendor/google/client_secret.json');
     $client->setAccessType("offline");        // offline access
     $client->setIncludeGrantedScopes(true);   // incremental auth
     $client->setDeveloperKey("AIzaSyDHDuBK9PYzXHk_0EMeZy4FdgZd32_Rq1U");
