@@ -56,7 +56,7 @@ $app->get("/getEmails",function(Request $request) use($app){
         $service = new Google_Service_Gmail($client);
         $user = 'me';
         $optParams = [];
-        $optParams['maxResults'] = 3; 
+        $optParams['maxResults'] = 10; 
         $optParams['labelIds'] = 'INBOX'; // Only show messages in Inbox
         $messages = $service->users_messages->listUsersMessages('me',$optParams);
         $list = $messages->getMessages();
