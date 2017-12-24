@@ -41,5 +41,46 @@ $app->get("/auth",function() use($app){
     $auth_url = $client->createAuthUrl();
     header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
 });
+$app->get("/getEmails",function(Request $request) use($app){
+    if($request->get("code"))
+    {
+        require("../classes/userMaster.php");
+        require("../classes/emailMaster.php");
+        $client = new Google_Client();
+        $client->setAuthConfig('client_secret.json');
+        $client->setAccessType("offline");        // offline access
+        $client->setIncludeGrantedScopes(true);   // incremental auth
+        $client->setDeveloperKey("AIzaSyDHDuBK9PYzXHk_0EMeZy4FdgZd32_Rq1U");
+        $client->authenticate($request->get("code"));
+        $access_token = $client->getAccessToken();
+        $service = new Google_Service_Gmail($client);
+        $user = 'me';
+        $optParams = [];
+        $optParams['maxResults'] = 10; 
+        $optParams['labelIds'] = 'INBOX'; // Only show messages in Inbox
+        $messages = $service->users_messages->listUsersMessages('me',$optParams);
+        $list = $messages->getMessages();
+        foreach($list as $listItem)
+        {
+            $messageID=$listItem->getId();
+            $content=$service->users_messages->get('me',$messageID, ['format' => 'metadata', 'metadataHeaders' => ['From','To', 'Subject']]);
+            $messagePayload = $content->getPayload();
+            $headers = $messagePayload->getHeaders();
+            var_dump($headers);
+            $parts = $content->getPayload()->getParts();
+            $body = $parts[0]['body'];
+            $rawData = $body->data;
+            $sanitizedData = strtr($rawData,'-_', '+/');
+            $decodedMessage = base64_decode($sanitizedData);
+            echo nl2br($decodedMessage);
+            echo '<br><br>';
+        }
+        return "DONE";
+    }
+    else
+    {
+        return $app->redirect("/?err=AUTHENTICATION_ERROR");
+    }
+});
 $app->run();
 ?>
