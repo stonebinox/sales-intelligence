@@ -29,7 +29,17 @@ $app->before(function(Request $request) use($app){
     $request->getSession()->start();
 });
 $app->get("/",function() use($app){
-    $app['twig']->render("index.html.twig");
+    return $app['twig']->render("index.html.twig");
+});
+$app->get("/auth",function() use($app){
+    $client = new Google_Client();
+    $client->setAuthConfig('client_secret.json');
+    $client->setAccessType("offline");        // offline access
+    $client->setIncludeGrantedScopes(true);   // incremental auth
+    $client->setDeveloperKey("AIzaSyDHDuBK9PYzXHk_0EMeZy4FdgZd32_Rq1U");
+    $client->addScope("https://www.googleapis.com/auth/gmail.readonly");
+    $auth_url = $client->createAuthUrl();
+    header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
 });
 $app->run();
 ?>
