@@ -67,6 +67,7 @@ class userMaster
     function addUser($emailID)
     {
         $emailID=secure($emailID);
+        echo $emailID;
         if(validate($emailID))
         {
             $app=$this->app;

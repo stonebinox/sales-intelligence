@@ -18,7 +18,10 @@ function validate($string)
     {
         return true;
     }
-    return false;
+    else
+    {
+        return false;
+    }
 }
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
     'monolog.logfile' => 'php://stderr',
