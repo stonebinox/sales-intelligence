@@ -71,7 +71,7 @@ class userMaster
         {
             $app=$this->app;
             $um="SELECT iduser_master FROM user_master WHERE stat='1' AND user_email='$emailID'";
-            echo $um;
+            return $um;
             $um=$app['db']->fetchAssoc($um);
             if(!validate($um))
             {
