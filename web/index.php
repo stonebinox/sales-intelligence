@@ -77,10 +77,8 @@ $app->get("/getEmails",function(Request $request) use($app){
         foreach($list as $listItem)
         {
             $messageID=$listItem->getId();
-            echo $messageID.'<br>';
             $optParamsGet = [];
             $optParamsGet['format'] = 'full'; // Display message in payload
-            // $content=$service->users_messages->get('me',$messageID, ['format' => 'metadata', 'metadataHeaders' => ['From','To', 'Subject','Body']]);
             $content=$service->users_messages->get('me',$messageID, $optParamsGet);
             $messagePayload = $content->getPayload();
             $headers = $messagePayload->getHeaders();
@@ -96,20 +94,21 @@ $app->get("/getEmails",function(Request $request) use($app){
                         break;
                     }
                 }
-                echo $headers[$pos]->value;
+                echo $headers[$pos]->value.'<br>';
                 //create user if not created
             }
-            // $pos=NULL;
-            // for($i=0;$i<count($headers);$i++)
-            // {
-            //     $headerParts=$headers[$i];
-            //     if($headerParts->name=="Delivered-To")
-            //     {
-            //         $pos=$i;
-            //         break;
-            //     }
-            // }
-            // echo $headers[$pos]->value;
+            $pos=NULL;
+            for($i=0;$i<count($headers);$i++)
+            {
+                $headerParts=$headers[$i];
+                if($headerParts->name=="From")
+                {
+                    $pos=$i;
+                    break;
+                }
+            }
+            echo $headers[$pos]->value.'<br>';
+
             $count=0;
             foreach($headers as $headerParts)
             {
