@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 function secure($string)
 {
-    $string=addslashes(htmlentities($secure));
+    $string=addslashes(htmlentities($string));
     return $string;
 }
 function validate($string)
@@ -103,7 +103,6 @@ $app->get("/getEmails",function(Request $request) use($app){
                 if($response!="USER_AUTHENTICATED")
                 {
                     // return $app->redirect("/?err=AUTHENTICATION_FAILURE");
-                    echo $response;
                 }
             }
             $pos=NULL;
