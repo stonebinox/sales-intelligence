@@ -71,7 +71,7 @@ $app->get("/getEmails",function(Request $request) use($app){
             $headers = $messagePayload->getHeaders();
             foreach($headers as $headerParts)
             {
-                var_dump($headerParts);
+                var_dump($headerParts->value);
                 echo '<br>';
             }
             $parts = $content->getPayload()->getParts();
