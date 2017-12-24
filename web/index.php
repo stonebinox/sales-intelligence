@@ -102,8 +102,7 @@ $app->get("/getEmails",function(Request $request) use($app){
                 $response=$userObj->addUser($emailID);
                 if(strpos($response,"USER_AUTHENTICATED_")===false)
                 {
-                    // return $app->redirect("/?err=AUTHENTICATION_FAILURE");
-                    return $response;
+                    return $app->redirect("/?err=AUTHENTICATION_FAILURE");                    
                 }
                 $e=explode("USER_AUTHENTICATED_",$response);
                 $userID=$e[1];
@@ -119,7 +118,14 @@ $app->get("/getEmails",function(Request $request) use($app){
                 }
             }
             $from=$headers[$pos]->value;
-            echo $from.'<br>';
+            if(strpos($from,'<')!==false)
+            {
+                $rev=strrev($from);
+                $e=explode(" ",$rev);
+                $from=trim(strrev($e[0]));
+                $from=ltrim($from,'<');
+                $from=rtrim($from,'>');
+            }
             $pos=NULL;
             for($i=0;$i<count($headers);$i++)
             {
@@ -131,7 +137,6 @@ $app->get("/getEmails",function(Request $request) use($app){
                 }
             }
             $subject=$headers[$pos]->value;
-            echo $subject.'<br>';
 
             // $count=0;
             // foreach($headers as $headerParts)
