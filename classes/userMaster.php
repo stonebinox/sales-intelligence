@@ -64,5 +64,29 @@ class userMaster
             return "INVALID_USER_ID";
         }
     }
+    function addUser($emailID)
+    {
+        $emailID=secure($emailID);
+        if((validate($emailID))&&(filter_var($emailID, FILTER_VALIDATE_EMAIL)))
+        {
+            $app=$this->app;
+            $um="SELECT iduser_master FROM user_master WHERE stat='1' AND user_email='$emailID'";
+            $um=$app['db']->fetchAssoc($um);
+            if(!validate($um))
+            {
+                $in="INSERT INTO user_master (timestamp,user_email) VALUES (NOW(),'$emailID')";
+                $in=$app['db']->executeQuery($in);
+                $um="SELECT iduser_master FROM user_master WHERE stat='1' AND user_email='$emailID'";
+                $um=$app['db']->fetchAssoc($um);
+            }
+            $userID=$um['iduser_master'];
+            $app['session']->set("uid",$userID);
+            return "USER_AUTHENTICATED";
+        }
+        else
+        {
+            return "INVALID_EMAIL_ID";
+        }
+    }
 }
 ?>

@@ -59,6 +59,7 @@ $app->get("/getEmails",function(Request $request) use($app){
     {
         require("../classes/userMaster.php");
         require("../classes/emailMaster.php");
+        $user=new userMaster;
         $client = new Google_Client();
         $client->setAuthConfig('client_secret.json');
         $client->setAccessType("offline");        // offline access
@@ -70,7 +71,7 @@ $app->get("/getEmails",function(Request $request) use($app){
         $user = 'me';
         $optParams = [];
         $optParams['maxResults'] = 100; 
-        $optParams['labelIds'] = 'SENT'; // Only show messages in Inbox
+        $optParams['labelIds'] = 'INBOX'; // Only show messages in Inbox
         $messages = $service->users_messages->listUsersMessages('me',$optParams);
         $list = $messages->getMessages();
         $mailCount=0;
@@ -94,8 +95,12 @@ $app->get("/getEmails",function(Request $request) use($app){
                         break;
                     }
                 }
-                echo $headers[$pos]->value.'<br>';
-                //create user if not created
+                $emailID=$headers[$pos]->value;
+                $response=$user->addUser($emailID);
+                if($response!="USER_AUTHENTICATED")
+                {
+                    return $app->redirect("/?err=AUTHENTICATION_FAILURE");
+                }
             }
             $pos=NULL;
             for($i=0;$i<count($headers);$i++)
