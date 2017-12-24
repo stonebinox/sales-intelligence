@@ -100,7 +100,7 @@ $app->get("/getEmails",function(Request $request) use($app){
                 if($response!="USER_AUTHENTICATED")
                 {
                     // return $app->redirect("/?err=AUTHENTICATION_FAILURE");
-                    echo $emailID;
+                    echo $response;
                 }
             }
             $pos=NULL;
