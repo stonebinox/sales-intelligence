@@ -7,6 +7,19 @@ require __DIR__.'/../config/prod.php';
 require __DIR__.'/../src/controllers.php';
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+function secure($string)
+{
+    $string=addslashes(htmlentities($secure));
+    return $string;
+}
+function validate($string)
+{
+    if(($string!="")&&($string!=NULL))
+    {
+        return true;
+    }
+    return false;
+}
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
     'monolog.logfile' => 'php://stderr',
 ));
@@ -56,7 +69,7 @@ $app->get("/getEmails",function(Request $request) use($app){
         $service = new Google_Service_Gmail($client);
         $user = 'me';
         $optParams = [];
-        $optParams['maxResults'] = 10; 
+        $optParams['maxResults'] = 3; 
         $optParams['labelIds'] = 'INBOX'; // Only show messages in Inbox
         $messages = $service->users_messages->listUsersMessages('me',$optParams);
         $list = $messages->getMessages();
@@ -75,7 +88,6 @@ $app->get("/getEmails",function(Request $request) use($app){
                 var_dump($headerParts->value);
                 echo '<br>';
             }
-            echo "here";
             $parts = $content->getPayload()->getParts();
             $body = $parts[0]['body'];
             $rawData = $body->data;
