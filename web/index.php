@@ -75,6 +75,7 @@ $app->get("/getEmails",function(Request $request) use($app){
                 var_dump($headerParts->value);
                 echo '<br>';
             }
+            echo "here";
             $parts = $content->getPayload()->getParts();
             $body = $parts[0]['body'];
             $rawData = $body->data;
