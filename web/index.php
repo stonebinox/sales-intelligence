@@ -56,7 +56,7 @@ $app->get("/getEmails",function(Request $request) use($app){
         $service = new Google_Service_Gmail($client);
         $user = 'me';
         $optParams = [];
-        $optParams['maxResults'] = 1000; 
+        $optParams['maxResults'] = 1; 
         $optParams['labelIds'] = 'INBOX'; // Only show messages in Inbox
         $messages = $service->users_messages->listUsersMessages('me',$optParams);
         $list = $messages->getMessages();
@@ -69,15 +69,18 @@ $app->get("/getEmails",function(Request $request) use($app){
             $content=$service->users_messages->get('me',$messageID, $optParamsGet);
             $messagePayload = $content->getPayload();
             $headers = $messagePayload->getHeaders();
-            var_dump($headers);
+            foreach($headers as $headerParts)
+            {
+                var_dump($headerParts);
+                echo '<br>';
+            }
             $parts = $content->getPayload()->getParts();
-            // var_dump($parts);
             $body = $parts[0]['body'];
             $rawData = $body->data;
             $sanitizedData = strtr($rawData,'-_', '+/');
             $decodedMessage = base64_decode($sanitizedData);
-            echo nl2br($decodedMessage);
-            echo '<br><br>';
+            $decodedMessage=secure($decodedMessage);
+
         }
         return "DONE";
     }
