@@ -63,12 +63,12 @@ $app->get("/getEmails",function(Request $request) use($app){
         foreach($list as $listItem)
         {
             $messageID=$listItem->getId();
-            $content=$service->users_messages->get('me',$messageID, ['format' => 'metadata', 'metadataHeaders' => ['From','To', 'Subject']]);
+            $content=$service->users_messages->get('me',$messageID, ['format' => 'metadata', 'metadataHeaders' => ['From','To', 'Subject','Body']]);
             $messagePayload = $content->getPayload();
             $headers = $messagePayload->getHeaders();
-            // var_dump($headers);
+            var_dump($headers);
             $parts = $content->getPayload()->getParts();
-            var_dump($parts);
+            // var_dump($parts);
             $body = $parts[0]['body'];
             $rawData = $body->data;
             $sanitizedData = strtr($rawData,'-_', '+/');
