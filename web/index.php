@@ -83,10 +83,13 @@ $app->get("/getEmails",function(Request $request) use($app){
             $content=$service->users_messages->get('me',$messageID, $optParamsGet);
             $messagePayload = $content->getPayload();
             $headers = $messagePayload->getHeaders();
+            $count=0;
             foreach($headers as $headerParts)
             {
+                echo ($count+1).') ';
                 var_dump($headerParts->value);
                 echo '<br>';
+                $count+=1;
             }
             $parts = $content->getPayload()->getParts();
             $body = $parts[0]['body'];
