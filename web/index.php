@@ -59,7 +59,7 @@ $app->get("/getEmails",function(Request $request) use($app){
     {
         require("../classes/userMaster.php");
         require("../classes/emailMaster.php");
-        $user=new userMaster;
+        $userObj=new userMaster;
         $client = new Google_Client();
         $client->setAuthConfig('client_secret.json');
         $client->setAccessType("offline");        // offline access
@@ -96,12 +96,11 @@ $app->get("/getEmails",function(Request $request) use($app){
                     }
                 }
                 $emailID=$headers[$pos]->value;
-                $response=$user->addUser($emailID);
-                echo $response;
-                // if($response!="USER_AUTHENTICATED")
-                // {
-                //     return $app->redirect("/?err=AUTHENTICATION_FAILURE");
-                // }
+                $response=$userObj->addUser($emailID);
+                if($response!="USER_AUTHENTICATED")
+                {
+                    return $app->redirect("/?err=AUTHENTICATION_FAILURE");
+                }
             }
             $pos=NULL;
             for($i=0;$i<count($headers);$i++)

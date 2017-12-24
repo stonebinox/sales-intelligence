@@ -70,8 +70,7 @@ class userMaster
         if((validate($emailID))&&(filter_var($emailID, FILTER_VALIDATE_EMAIL)))
         {
             $app=$this->app;
-            $um="SELECT iduser_master FROM user_master WHERE stat='1' AND user_email='$emailID'";
-            return $um;
+            $um="SELECT iduser_master FROM user_master WHERE stat='1' AND user_email='$emailID'";            
             $um=$app['db']->fetchAssoc($um);
             if(!validate($um))
             {
