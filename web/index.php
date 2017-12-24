@@ -16,10 +16,10 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
       'driver' => 'pdo_mysql',
-      'dbname' => 'database',
-      'user' => 'user',
-      'password' => 'password',
-      'host'=> "www.host.net",
+      'dbname' => 'heroku_bede2add7766338',
+      'user' => 'b496bdcb31bc8c',
+      'password' => '83ba04a2',
+      'host'=> "us-cdbr-iron-east-05.cleardb.net",
     )
 ));
 $app->register(new Silex\Provider\SessionServiceProvider, array(
