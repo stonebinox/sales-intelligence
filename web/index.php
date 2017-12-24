@@ -68,6 +68,7 @@ $app->get("/getEmails",function(Request $request) use($app){
             $headers = $messagePayload->getHeaders();
             // var_dump($headers);
             $parts = $content->getPayload()->getParts();
+            var_dump($parts);
             $body = $parts[0]['body'];
             $rawData = $body->data;
             $sanitizedData = strtr($rawData,'-_', '+/');
