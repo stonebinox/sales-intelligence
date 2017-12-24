@@ -114,5 +114,41 @@ class emailMaster extends userMaster
             return "INVALID_USER_ID";
         }
     }
+    function addEmail($userID,$from,$subject,$body,$mailbox='Inbox')
+    {
+        $userID=secure($userID);
+        userMaster::__construct($userID);
+        if($this->userValid)
+        {
+            $app=$this->app;
+            $from=secure($from);
+            if(validate($from))
+            {
+                $subject=trim(secure($subject));
+                $body=trim(secure($body));
+                $mailbox=secure($mailbox);
+                $em="SELECT idemail_master FROM email_master WHERE stat='1' AND user_master_iduser_master='$userID' AND from_email='$from' AND email_subject='$subject' AND email_mailbox='$mailbox'";
+                $em=$app['db']->fetchAssoc($em);
+                if(!validate($em))
+                {
+                    $in="INSERT INTO email_master (timestamp,user_master_iduser_master,from_email,email_subject,email_body,email_mailbox) VALUES (NOW(),'$userID','$from','$subject','$body','$mailbox')";
+                    $in=$app['db']->executeQuery($in);
+                    return "EMAIL_ADDED";
+                }
+                else
+                {
+                    return "EMAIL_ALREADY_ADDED";
+                }
+            }
+            else
+            {
+                return "INVALID_FROM";
+            }
+        }
+        else
+        {
+            return "INVALID_USER_ID";
+        }
+    }
 }
 ?>

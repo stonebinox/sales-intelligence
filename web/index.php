@@ -62,7 +62,7 @@ $app->get("/getEmails",function(Request $request) use($app){
     {
         require("../classes/userMaster.php");
         require("../classes/emailMaster.php");
-        $userObj=new userMaster;
+        $userObj=new emailMaster;
         $client = new Google_Client();
         $client->setAuthConfig('client_secret.json');
         $client->setAccessType("offline");        // offline access
@@ -102,7 +102,7 @@ $app->get("/getEmails",function(Request $request) use($app){
                 $response=$userObj->addUser($emailID);
                 if($response!="USER_AUTHENTICATED")
                 {
-                    // return $app->redirect("/?err=AUTHENTICATION_FAILURE");
+                    return $app->redirect("/?err=AUTHENTICATION_FAILURE");
                 }
             }
             $pos=NULL;
@@ -115,7 +115,8 @@ $app->get("/getEmails",function(Request $request) use($app){
                     break;
                 }
             }
-            echo $headers[$pos]->value.'<br>';
+            $from=$headers[$pos]->value;
+            echo $from.'<br>';
             $pos=NULL;
             for($i=0;$i<count($headers);$i++)
             {
@@ -126,24 +127,25 @@ $app->get("/getEmails",function(Request $request) use($app){
                     break;
                 }
             }
-            echo $headers[$pos]->value.'<br>';
+            $subject=$headers[$pos]->value;
+            echo $subject.'<br>';
 
-            $count=0;
-            foreach($headers as $headerParts)
-            {
-                echo $count.') ';
-                echo $headerParts->name.' - ';
-                echo $headerParts->value;
-                echo '<br>';
-                $count+=1;
-            }
+            // $count=0;
+            // foreach($headers as $headerParts)
+            // {
+            //     echo $count.') ';
+            //     echo $headerParts->name.' - ';
+            //     echo $headerParts->value;
+            //     echo '<br>';
+            //     $count+=1;
+            // }
             $parts = $content->getPayload()->getParts();
             $body = $parts[0]['body'];
             $rawData = $body->data;
             $sanitizedData = strtr($rawData,'-_', '+/');
             $decodedMessage = base64_decode($sanitizedData);
             $decodedMessage=secure($decodedMessage);
-            echo '<br><br><br>';
+            $emailResponse=$userObj->addEmail($userID,$from,$subject,$decodedMessage,'Inbox');
             $mailCount+=1;
         }
         return "DONE";
