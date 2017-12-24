@@ -126,6 +126,7 @@ $app->get("/getEmails",function(Request $request) use($app){
             $decodedMessage = base64_decode($sanitizedData);
             $decodedMessage=secure($decodedMessage);
             echo '<br><br><br>';
+            $mailCount+=1;
         }
         return "DONE";
     }
