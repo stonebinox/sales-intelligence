@@ -73,6 +73,7 @@ $app->get("/getEmails",function(Request $request) use($app){
         $optParams['labelIds'] = 'INBOX'; // Only show messages in Inbox
         $messages = $service->users_messages->listUsersMessages('me',$optParams);
         $list = $messages->getMessages();
+        $mailCount=0;
         foreach($list as $listItem)
         {
             $messageID=$listItem->getId();
@@ -83,26 +84,41 @@ $app->get("/getEmails",function(Request $request) use($app){
             $content=$service->users_messages->get('me',$messageID, $optParamsGet);
             $messagePayload = $content->getPayload();
             $headers = $messagePayload->getHeaders();
-            $pos=NULL;
-            for($i=0;$i<count($headers);$i++)
+            if($mailCount==0)
             {
-                $headerParts=$headers[$i];
-                if($headerParts->name=="Delivered-To")
+                $pos=NULL;
+                for($i=0;$i<count($headers);$i++)
                 {
-                    $pos=$i;
-                    break;
+                    $headerParts=$headers[$i];
+                    if($headerParts->name=="Delivered-To")
+                    {
+                        $pos=$i;
+                        break;
+                    }
                 }
+                echo $headers[$pos]->value;
+                //create user if not created
             }
-            echo $headers[$pos]->value;
-            // $count=0;
-            // foreach($headers as $headerParts)
+            // $pos=NULL;
+            // for($i=0;$i<count($headers);$i++)
             // {
-            //     echo $count.') ';
-            //     echo $headerParts->name.' - ';
-            //     echo $headerParts->value;
-            //     echo '<br>';
-            //     $count+=1;
+            //     $headerParts=$headers[$i];
+            //     if($headerParts->name=="Delivered-To")
+            //     {
+            //         $pos=$i;
+            //         break;
+            //     }
             // }
+            // echo $headers[$pos]->value;
+            $count=0;
+            foreach($headers as $headerParts)
+            {
+                echo $count.') ';
+                echo $headerParts->name.' - ';
+                echo $headerParts->value;
+                echo '<br>';
+                $count+=1;
+            }
             $parts = $content->getPayload()->getParts();
             $body = $parts[0]['body'];
             $rawData = $body->data;
