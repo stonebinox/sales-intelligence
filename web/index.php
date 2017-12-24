@@ -108,7 +108,18 @@ $app->get("/getEmails",function(Request $request) use($app){
                 }
             }
             echo $headers[$pos]->value.'<br>';
-
+            $pos=NULL;
+            for($i=0;$i<count($headers);$i++)
+            {
+                $headerParts=$headers[$i];
+                if($headerParts->name=="Subject")
+                {
+                    $pos=$i;
+                    break;
+                }
+            }
+            echo $headers[$pos]->value.'<br>';
+            
             $count=0;
             foreach($headers as $headerParts)
             {
