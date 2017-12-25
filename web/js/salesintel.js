@@ -226,7 +226,7 @@ app.controller("mails",function($scope,$compile,$http){
             }
             var email=emails[i];
             var emailUser=email.from_email;
-            var text='<form method="post" action="sendEmail"><div class="form-group"><label for="email">Email ID</label><p class="form-control-static">'+emailUser+'</p></div><div class="form-group"><label for="message">Message</label><textarea name="message" id="message" class="form-control" placeholder="Enter a message here"></textarea></div><button type="button" class="btn btn-primary">Send</button></form>';
+            var text='<form method="post" action="sendEmail"><div class="form-group"><label for="email">Email ID</label><p class="form-control-static">'+emailUser+'</p></div><div class="form-group"><label for="message">Message</label><textarea name="message" id="message" class="form-control" placeholder="Enter a message here" rows=10 required></textarea><input type="hidden" name="email_id" value="'+emailID+'"></div><button type="submit" class="btn btn-primary">Send</button></form>';
             messageBox("Send Email",text);
         }
     };
