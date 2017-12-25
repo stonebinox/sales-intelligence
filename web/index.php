@@ -245,5 +245,16 @@ $app->get("/emails",function() use($app){
         return "INVALID_PARAMETERS";
     }
 });
+$app->get("/logout",function() use($app){
+    if($app['session']->get("uid"))
+    {
+        $app['session']->remove("uid");
+        return $app->redirect("/");
+    }
+    else
+    {
+        return $app->redirect("/");
+    }
+});
 $app->run();
 ?>

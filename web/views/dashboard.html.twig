@@ -4,6 +4,13 @@
     <br>
     <div class="container" ng-init="emailCount=0;getEmails();">
         <h1 class="text-center">Dashboard</h1>
+        <hr>
+        <div class="text-center">
+            <div class="btn-group">
+                <button type="button" class="btn btn-info" onclick="window.location='/';">Switch to another account</button>
+                <button type="button" class="btn btn-default" onclick="window.location='logout';">Log out</button>
+            </div>
+        </div>
         <div class="panel panel-default">
             <div class="panel-heading">Emails ({[{emailCount}]})</div>
             <div class="panel-body"></div>
