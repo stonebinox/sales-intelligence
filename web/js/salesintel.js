@@ -165,11 +165,19 @@ app.controller("mails",function($scope,$compile,$http){
             }
         }
     };
+    $scope.inboundFlag=false;
+    $scope.outboundFlag=false;
+    $scope.dateFlag=true;
     $scope.sortByInbound=function(){
         if($scope.sorted.length>0){
             var sorted=$scope.sorted;
             sorted=sorted.sort(function(a, b) {
-                return b.inbound_count - a.inbound_count;
+                if(!$scope.inboundFlag){
+                    return b.inbound_count - a.inbound_count;
+                }
+                else{
+                    return a.inbound_count - b.inbound_count;
+                }
             });
             $scope.sorted=sorted;
             $scope.displaySortedList();
@@ -179,7 +187,12 @@ app.controller("mails",function($scope,$compile,$http){
         if($scope.sorted.length>0){
             var sorted=$scope.sorted;
             sorted=sorted.sort(function(a, b) {
-                return b.outbound_count - a.outbound_count;
+                if(!$scope.outboundFlag){
+                    return b.outbound_count - a.outbound_count;
+                }
+                else{
+                    return a.outbound_count - b.outbound_count;
+                }
             });
             $scope.sorted=sorted;
             $scope.displaySortedList();
@@ -189,7 +202,12 @@ app.controller("mails",function($scope,$compile,$http){
         if($scope.sorted.length>0){
             var sorted=$scope.sorted;
             sorted=sorted.sort(function(a, b) {
-                return b.idemail_master - a.idemail_master;
+                if(!$scope.dateFlag){
+                    return b.idemail_master - a.idemail_master;
+                }
+                else{
+                    return a.idemail_master - b.idemail_master;
+                }
             });
             $scope.sorted=sorted;
             $scope.displaySortedList();
