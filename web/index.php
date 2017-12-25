@@ -142,6 +142,17 @@ $app->get("/getEmails",function(Request $request) use($app){
                     break;
                 }
             }
+            $pos=NULL;
+            for($i=0;$i<count($headers);$i++)
+            {
+                $headerParts=$headers[$i];
+                if($headerParts->name=="Date")
+                {
+                    $pos=$i;
+                    break;
+                }
+            }
+            $date=$headers[$pos]->value;
             $subject=$headers[$pos]->value;
             $parts = $content->getPayload()->getParts();
             $body = $parts[0]['body'];
@@ -149,10 +160,9 @@ $app->get("/getEmails",function(Request $request) use($app){
             $sanitizedData = strtr($rawData,'-_', '+/');
             $decodedMessage = base64_decode($sanitizedData);
             $decodedMessage=secure($decodedMessage);
-            $emailResponse=$userObj->addEmail($userID,$from,$subject,$decodedMessage,'Inbox',$emailerName);
+            $emailResponse=$userObj->addEmail($userID,$from,$subject,$decodedMessage,'Inbox',$emailerName,$date);
             $mailCount+=1;
         }
-
         $user = 'me';
         $optParams = [];
         $optParams['maxResults'] = 100; 
@@ -203,26 +213,37 @@ $app->get("/getEmails",function(Request $request) use($app){
                 }
             }
             $subject=$headers[$pos]->value;
-            $count=0;
-            foreach($headers as $headerParts)
+            $pos=NULL;
+            for($i=0;$i<count($headers);$i++)
             {
-                echo $count.') ';
-                echo $headerParts->name.' - ';
-                echo $headerParts->value;
-                echo '<br>';
-                $count+=1;
+                $headerParts=$headers[$i];
+                if($headerParts->name=="Date")
+                {
+                    $pos=$i;
+                    break;
+                }
             }
+            $date=$headers[$pos]->value;
+            // $count=0;
+            // foreach($headers as $headerParts)
+            // {
+            //     echo $count.') ';
+            //     echo $headerParts->name.' - ';
+            //     echo $headerParts->value;
+            //     echo '<br>';
+            //     $count+=1;
+            // }
             $parts = $content->getPayload()->getParts();
             $body = $parts[0]['body'];
             $rawData = $body->data;
             $sanitizedData = strtr($rawData,'-_', '+/');
             $decodedMessage = base64_decode($sanitizedData);
             $decodedMessage=secure($decodedMessage);
-            $emailResponse=$userObj->addEmail($userID,$to,$subject,$decodedMessage,'Sent',$emailerName);
+            $emailResponse=$userObj->addEmail($userID,$to,$subject,$decodedMessage,'Sent',$emailerName,$date);
             $mailCount+=1;
         }
-        // return $app->redirect("/dashboard");
-        return "DONE";
+        return $app->redirect("/dashboard");
+        // return "DONE";
     }
     else
     {

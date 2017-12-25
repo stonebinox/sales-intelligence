@@ -114,7 +114,7 @@ class emailMaster extends userMaster
             return "INVALID_USER_ID";
         }
     }
-    function addEmail($userID,$from,$subject,$body,$mailbox='Inbox',$emailerName='')
+    function addEmail($userID,$from,$subject,$body,$mailbox='Inbox',$emailerName='',$emailDate='')
     {
         $userID=secure($userID);
         userMaster::__construct($userID);
@@ -127,11 +127,13 @@ class emailMaster extends userMaster
                 $subject=trim(secure($subject));
                 $body=trim(secure($body));
                 $mailbox=secure($mailbox);
+                $emailerName=secure($emailerName);
+                $emailDate=secure($emailDate);
                 $em="SELECT idemail_master FROM email_master WHERE stat='1' AND user_master_iduser_master='$userID' AND from_email='$from' AND email_subject='$subject' AND email_mailbox='$mailbox'";
                 $em=$app['db']->fetchAssoc($em);
                 if(!validate($em))
                 {
-                    $in="INSERT INTO email_master (timestamp,user_master_iduser_master,from_email,email_subject,email_body,email_mailbox,email_from_name) VALUES (NOW(),'$userID','$from','$subject','$body','$mailbox','$emailerName')";
+                    $in="INSERT INTO email_master (timestamp,user_master_iduser_master,from_email,email_subject,email_body,email_mailbox,email_from_name,email_date) VALUES (NOW(),'$userID','$from','$subject','$body','$mailbox','$emailerName','$emailDate')";
                     $in=$app['db']->executeQuery($in);
                     return "EMAIL_ADDED";
                 }
