@@ -79,14 +79,44 @@ app.controller("mails",function($scope,$compile,$http){
                     sorted.push(email);
                 }
             }
-            var text='<table class="table"><thead><tr><th width="25%">Email</th><th width="25%">Subject</th><th width="25%">Inbound</th><th width="25%">Actions</th></tr></thead><tbody>';
+            for(var i=0;i<sent.length;i++){
+                var email=sent[i];
+                var emailCount=0;
+                var emailID=email.idemail_master;
+                var otherEmail=email.from_email;
+                for(var j=0;j<sent.length;j++){
+                    var temp=sent[j];
+                    if(temp.idemail_master!=emailID){
+                        var otherEmail2=temp.from_email;
+                        if(otherEmail2==otherEmail){
+                            emailCount+=1;
+                        }
+                    }
+                }
+                // email.outbound_count=emailCount;
+                var pos=null;
+                for(var j=0;j<sorted.length;j++){
+                    var sort=sorted[j];
+                    if(sort.idemail_master==emailID){
+                        pos=j;
+                        break;
+                    }
+                }
+                if(validate(pos)){
+                    var storedEmail=sorted[pos];
+                    storedEmail.outbound_count=emailCount;
+                    sorted[pos]=storedEmail;
+                }
+            }
+            var text='<table class="table"><thead><tr><th width="20%">Email</th><th width="20%">Subject</th><th width="20%">Inbound</th><td width="20%">Outbound</th><th width="20%">Actions</th></tr></thead><tbody>';
             $scope.emailCount=sorted.length;
             for(var i=0;i<sorted.length;i++){
                 var email=sorted[i];
                 var other=email.from_email;
                 var subject=email.email_subject;
                 var inboundCount=email.inbound_count;
-                text+='<tr><td width="25%">'+other+'</td><td width="25%">'+subject+'</td><td width="25%">'+inboundCount+'</td><td width="25%"><div class="btn-group"><button type="button" class="btn btn-primary btn-sm">Send email</button><button type="button" class="btn btn-default btn-sm">Read latest email</button></div></td></tr>';
+                var outboundCount=email.outbound_count;
+                text+='<tr><td width="20%">'+other+'</td><td width="20%">'+subject+'</td><td width="20%">'+inboundCount+'</td><td width="20%">'+outboundCount+'</td><td width="20%"><div class="btn-group"><button type="button" class="btn btn-primary btn-sm">Send email</button><button type="button" class="btn btn-default btn-sm">Read latest email</button></div></td></tr>';
             }
             text+='</tbody></table>';
             $(".panel-body").html(text);
