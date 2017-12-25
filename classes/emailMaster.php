@@ -195,7 +195,8 @@ class emailMaster extends userMaster
                 $client->addScope("https://www.googleapis.com/auth/gmail.send");
                 $service = new Google_Service_Gmail($client);
                 try {
-                    $messageResponse = $service->users_messages->send($userEmail, $message);
+                    $messageObj=new Google_Service_Gmail_Message($message);
+                    $messageResponse = $service->users_messages->send($userEmail, $messageObj);
                     return "EMAIL_SENT";
                 } catch (Exception $e) {
                     return "EMAIL_ERROR";
