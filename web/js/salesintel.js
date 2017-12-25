@@ -118,10 +118,27 @@ app.controller("mails",function($scope,$compile,$http){
                 var inboundCount=email.inbound_count;
                 var outboundCount=email.outbound_count;
                 var emailID=email.idemail_master;
-                text+='<tr><td width="20%">'+other+'</td><td width="20%">'+subject+'</td><td width="20%">'+inboundCount+'</td><td width="20%">'+outboundCount+'</td><td width="20%"><div class="btn-group"><button type="button" class="btn btn-primary btn-xs">Send email</button><button type="button" class="btn btn-default btn-xs">Read latest email</button></div></td></tr>';
+                text+='<tr><td width="20%">'+other+'</td><td width="20%">'+subject+'</td><td width="20%">'+inboundCount+'</td><td width="20%">'+outboundCount+'</td><td width="20%"><div class="btn-group"><button type="button" class="btn btn-primary btn-xs">Send email</button><button type="button" ng-click="showEmailContent('+emailID+')" class="btn btn-default btn-xs">Read latest email</button></div></td></tr>';
             }
             text+='</tbody></table>';
             $(".panel-body").html(text);
+            $compile($(".panel-body"))($scope);
+        }
+    };
+    $scope.showEmailContent=function(emailID){
+        if(validate(emailID)){
+            var emails=$scope.emails;
+            var pos=null;
+            for(var i=0;i<emails.length;i++){
+                var email=emails[i];
+                if(email.idemail_master==emailID){
+                    pos=i;
+                    break;
+                }
+            }
+            var email=emails[pos];
+            var content=nl2br(stripslashes(email.email_body));
+            messageBox("Email Content",content);
         }
     };
 });
