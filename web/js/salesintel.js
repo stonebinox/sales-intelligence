@@ -138,8 +138,13 @@ app.controller("mails",function($scope,$compile,$http){
             }
             if(validate(pos)){
                 var email=emails[pos];
-                var content=nl2br(stripslashes(email.email_body));
-                messageBox("Email Content",content);
+                var content=$.trim(nl2br(stripslashes(email.email_body)));
+                if(validate(content)){
+                    messageBox("Email Content",content);
+                }
+                else{
+                    messageBox("Email Content","This email's content has not yet been synced.");    
+                }
             }
             else{
                 messageBox("Email Content","This email's content has not yet been synced.");
