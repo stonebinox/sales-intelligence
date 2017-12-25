@@ -173,9 +173,11 @@ app.controller("mails",function($scope,$compile,$http){
             var sorted=$scope.sorted;
             sorted=sorted.sort(function(a, b) {
                 if(!$scope.inboundFlag){
+                    $scope.inboundFlag=true;
                     return b.inbound_count - a.inbound_count;
                 }
                 else{
+                    $scope.inboundFlag=false;
                     return a.inbound_count - b.inbound_count;
                 }
             });
@@ -188,9 +190,11 @@ app.controller("mails",function($scope,$compile,$http){
             var sorted=$scope.sorted;
             sorted=sorted.sort(function(a, b) {
                 if(!$scope.outboundFlag){
+                    $scope.outboundFlag=true;
                     return b.outbound_count - a.outbound_count;
                 }
                 else{
+                    $scope.outboundFlag=false;
                     return a.outbound_count - b.outbound_count;
                 }
             });
@@ -203,9 +207,11 @@ app.controller("mails",function($scope,$compile,$http){
             var sorted=$scope.sorted;
             sorted=sorted.sort(function(a, b) {
                 if(!$scope.dateFlag){
+                    $scope.dateFlag=true;
                     return b.idemail_master - a.idemail_master;
                 }
                 else{
+                    $scope.dateFlag=false;
                     return a.idemail_master - b.idemail_master;
                 }
             });
