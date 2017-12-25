@@ -6,6 +6,7 @@ app.controller("mails",function($scope,$compile,$http){
     $scope.emails=[];
     $scope.emailCount=0;
     $scope.user_id=null;
+    $scope.sorted=[];
     $scope.getEmails=function(){
         $(".panel-body").html('<p class="text-center"><img src="images/ripple.gif" border=0 alt="Loading" width=30 height=30></p>');
         $http.get("emails")
@@ -108,9 +109,16 @@ app.controller("mails",function($scope,$compile,$http){
                     sorted[pos]=storedEmail;
                 }
             }
-            var text='<table class="table"><thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Inbound</th><th>Outbound</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
             $scope.emailCount=sorted.length;
             console.log(sorted);
+            $scope.sorted=sorted;
+            $scope.displaySortedList();
+        }
+    };
+    $scope.displaySortedList=function(){
+        if($scope.sorted.length>0){
+            var text='<table class="table"><thead><tr><th>Name</th><th>Email</th><th>Subject</th><th><A href="#" ng-click="sortByInbound()">Inbound</a></th><th>Outbound</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+            var sorted=$scope.sorted;
             for(var i=0;i<sorted.length;i++){
                 var email=sorted[i];
                 var other=email.from_email;
@@ -154,6 +162,16 @@ app.controller("mails",function($scope,$compile,$http){
             else{
                 messageBox("Email Content","This email's content has not yet been synced.");
             }
+        }
+    };
+    $scope.sortByInbound=function(){
+        if($scope.sorted.length>0){
+            var sorted=$scope.sorted;
+            sorted=sorted.sort(function(a, b) {
+                return a.inbound_count - b.inbound_count;
+            });
+            $scope.sorted=sorted;
+            $scope.displaySortedList();
         }
     };
 });
