@@ -2,12 +2,13 @@
 {% block content %}
 <body ng-app="si" ng-controller="mails">
     <br>
-    <div class="container">
+    <div class="container" ng-init="getAuthStatus()">
         <div class="well">
             <p class="text-center"><img src="images/logo.png" alt="Sales Intelligence" class="img-responsive" style="margin: 0 auto;"></p>
             <hr>
             <div class="text-center">
-                <button type="button" class="btn btn-primary btn-lg" onclick="window.location='auth';">Login</button>
+                <button type="button" class="btn btn-primary btn-lg" onclick="window.location='auth';" id="login">Login</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-info btn-lg" onclick="window.location='dashboard';" id="dashboard" style="display:none;">View threads</button>
             </div>
         </div>
     </div>

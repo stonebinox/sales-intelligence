@@ -301,5 +301,14 @@ $app->get("/logout",function() use($app){
         return $app->redirect("/");
     }
 });
+$app->get("/getAuthStatus",function() use($app){
+    if($app['session']->get("uid")){
+        return "USER_AUTHORIZED" ;
+    }
+    else
+    {
+        return "USER_NOT_AUTHORIZED";
+    }
+});
 $app->run();
 ?>

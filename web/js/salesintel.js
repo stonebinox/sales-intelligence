@@ -194,4 +194,24 @@ app.controller("mails",function($scope,$compile,$http){
             $scope.displaySortedList();
         }
     };
+    $scope.getAuthStatus=function(){
+        $http.get("getAuthStatus")
+        .then(function success(response){
+            response=$.trim(response.data);
+            switch(response){
+                case "USER_AUTHORIZED":
+                $("#login").css("display","none");
+                $("#dashboard").css("display","block");
+                break;
+                case "USER_NOT_AUTHORIZED":
+                $("#login").css("display","block");
+                $("#dashboard").css("display","none");
+                break;
+            }
+        },
+        function error(response){
+            console.log(response);
+            messageBox("Problem","Something went wrong while loading session information. Please try again later.");
+        });
+    }; 
 });
