@@ -120,6 +120,9 @@ app.controller("mails",function($scope,$compile,$http){
                 var emailID=email.idemail_master;
                 var emailDate=email.email_date;
                 var fromName=email.email_from_name;
+                if(!validate(fromName)){
+                    fromName=other;
+                }
                 text+='<tr><td>'+fromName+'</td><td>'+other+'</td><td>'+subject+'</td><td>'+inboundCount+'</td><td>'+outboundCount+'</td><td>'+emailDate+'</td><td><div class="btn-group"><button type="button" class="btn btn-primary btn-xs">Send email</button><button type="button" ng-click="showEmailContent('+emailID+')" class="btn btn-default btn-xs">Read latest email</button></div></td></tr>';
             }
             text+='</tbody></table>';
