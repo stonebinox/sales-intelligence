@@ -38,7 +38,20 @@ app.controller("mails",function($scope,$compile,$http){
     };
     $scope.matchEmails=function(){
         if(validate($scope.emails)){
-
+            var emails=$scope.emails;
+            var inbox=[];
+            var sent=[];
+            for(var i=0;i<emails.length;i++){
+                var email=emails[i];
+                var emailMailbox=email.email_mailbox;
+                if(emailMailbox=="Inbox"){
+                    inbox.push(email);
+                }
+                else if(emailMailbox=="Sent"){
+                    sent.push(email);
+                }
+            }
+            console.log(inbox,sent);
         }
     };
 });
