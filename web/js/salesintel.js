@@ -136,9 +136,14 @@ app.controller("mails",function($scope,$compile,$http){
                     break;
                 }
             }
-            var email=emails[pos];
-            var content=nl2br(stripslashes(email.email_body));
-            messageBox("Email Content",content);
+            if(validate(pos)){
+                var email=emails[pos];
+                var content=nl2br(stripslashes(email.email_body));
+                messageBox("Email Content",content);
+            }
+            else{
+                messageBox("Email Content","This email's content has not yet been synced.");
+            }
         }
     };
 });
