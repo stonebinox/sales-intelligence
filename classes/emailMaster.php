@@ -199,7 +199,7 @@ class emailMaster extends userMaster
                     $messageResponse = $service->users_messages->send($userEmail, $messageObj);
                     return "EMAIL_SENT";
                 } catch (Exception $e) {
-                    return "EMAIL_ERROR";
+                    return "EMAIL_ERROR_".$e;
                 }
             }
             else
