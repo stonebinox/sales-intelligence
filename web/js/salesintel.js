@@ -117,7 +117,7 @@ app.controller("mails",function($scope,$compile,$http){
     };
     $scope.displaySortedList=function(){
         if($scope.sorted.length>0){
-            var text='<table class="table"><thead><tr><th>Name</th><th>Email</th><th>Subject</th><th><A href="#" ng-click="sortByInbound()">Inbound</a></th><th><a href="#" ng-click="sortByOutbound()">Outbound</a></th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+            var text='<table class="table"><thead><tr><th>Name</th><th>Email</th><th>Subject</th><th><A href="#" ng-click="sortByInbound()">Inbound</a></th><th><a href="#" ng-click="sortByOutbound()">Outbound</a></th><th><a href="#" ng-click="sortByDate()">Date</a></th><th>Actions</th></tr></thead><tbody>';
             var sorted=$scope.sorted;
             for(var i=0;i<sorted.length;i++){
                 var email=sorted[i];
@@ -179,6 +179,16 @@ app.controller("mails",function($scope,$compile,$http){
             var sorted=$scope.sorted;
             sorted=sorted.sort(function(a, b) {
                 return b.outbound_count - a.outbound_count;
+            });
+            $scope.sorted=sorted;
+            $scope.displaySortedList();
+        }
+    };
+    $scope.sortByDate=function(){
+        if($scope.sorted.length>0){
+            var sorted=$scope.sorted;
+            sorted=sorted.sort(function(a, b) {
+                return b.idemail_master - a.idemail_master;
             });
             $scope.sorted=sorted;
             $scope.displaySortedList();
