@@ -79,7 +79,7 @@ app.controller("mails",function($scope,$compile,$http){
                     sorted.push(email);
                 }
             }
-            var text='<table class="table"><thead><tr><th width="25%">Email</th><th width="25%">Inbound</th><th width="25%">Subject</th><th width="25%">Actions</th></tr></thead><tbody>';
+            var text='<table class="table"><thead><tr><th width="25%">Email</th><th width="25%">Subject</th><th width="25%">Inbound</th><th width="25%">Actions</th></tr></thead><tbody>';
             $scope.emailCount=sorted.length;
             for(var i=0;i<sorted.length;i++){
                 var email=sorted[i];
