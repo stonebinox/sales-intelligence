@@ -131,7 +131,7 @@ class emailMaster extends userMaster
                 $em=$app['db']->fetchAssoc($em);
                 if(!validate($em))
                 {
-                    $in="INSERT INTO email_master (timestamp,user_master_iduser_master,from_email,email_subject,email_body,email_mailbox) VALUES (NOW(),'$userID','$from','$subject','$body','$mailbox')";
+                    $in="INSERT INTO email_master (timestamp,user_master_iduser_master,from_email,email_subject,email_body,email_mailbox,email_from_name) VALUES (NOW(),'$userID','$from','$subject','$body','$mailbox','$emailerName')";
                     $in=$app['db']->executeQuery($in);
                     return "EMAIL_ADDED";
                 }
