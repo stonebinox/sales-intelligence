@@ -101,6 +101,7 @@ app.controller("mails",function($scope,$compile,$http){
                         break;
                     }
                 }
+                console.log(pos);
                 if(validate(pos)){
                     var storedEmail=sorted[pos];
                     storedEmail.outbound_count=emailCount;
