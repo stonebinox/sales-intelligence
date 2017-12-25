@@ -11,7 +11,6 @@ app.controller("mails",function($scope,$compile,$http){
         $http.get("emails")
         .then(function success(response){
             response=response.data;
-            console.log(response);
             $(".panel-body").html('');
             if(typeof response=="object"){
                 $scope.emails=response;
@@ -110,6 +109,7 @@ app.controller("mails",function($scope,$compile,$http){
             }
             var text='<table class="table"><thead><tr><th width="20%">Email</th><th width="20%">Subject</th><th width="20%">Inbound</th><td width="20%">Outbound</th><th width="20%">Actions</th></tr></thead><tbody>';
             $scope.emailCount=sorted.length;
+            console.log(sorted);
             for(var i=0;i<sorted.length;i++){
                 var email=sorted[i];
                 var other=email.from_email;
