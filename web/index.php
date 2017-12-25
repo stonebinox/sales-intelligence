@@ -74,7 +74,7 @@ $app->get("/getEmails",function(Request $request) use($app){
         $service = new Google_Service_Gmail($client);
         $user = 'me';
         $optParams = [];
-        $optParams['maxResults'] = 100; 
+        $optParams['maxResults'] = 300; 
         $optParams['labelIds'] = 'INBOX'; // Only show messages in Inbox
         $messages = $service->users_messages->listUsersMessages('me',$optParams);
         $list = $messages->getMessages();
@@ -148,6 +148,7 @@ $app->get("/getEmails",function(Request $request) use($app){
                     break;
                 }
             }
+            $subject=$headers[$pos]->value;
             $pos=NULL;
             for($i=0;$i<count($headers);$i++)
             {
@@ -159,7 +160,6 @@ $app->get("/getEmails",function(Request $request) use($app){
                 }
             }
             $date=$headers[$pos]->value;
-            $subject=$headers[$pos]->value;
             $parts = $content->getPayload()->getParts();
             $body = $parts[0]['body'];
             $rawData = $body->data;
@@ -171,7 +171,7 @@ $app->get("/getEmails",function(Request $request) use($app){
         }
         $user = 'me';
         $optParams = [];
-        $optParams['maxResults'] = 100; 
+        $optParams['maxResults'] = 300; 
         $optParams['labelIds'] = 'SENT'; // Only show messages in Sent
         $messages = $service->users_messages->listUsersMessages('me',$optParams);
         $list = $messages->getMessages();
