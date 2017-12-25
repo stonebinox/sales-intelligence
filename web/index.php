@@ -137,16 +137,6 @@ $app->get("/getEmails",function(Request $request) use($app){
                 }
             }
             $subject=$headers[$pos]->value;
-
-            // $count=0;
-            // foreach($headers as $headerParts)
-            // {
-            //     echo $count.') ';
-            //     echo $headerParts->name.' - ';
-            //     echo $headerParts->value;
-            //     echo '<br>';
-            //     $count+=1;
-            // }
             $parts = $content->getPayload()->getParts();
             $body = $parts[0]['body'];
             $rawData = $body->data;
@@ -154,7 +144,6 @@ $app->get("/getEmails",function(Request $request) use($app){
             $decodedMessage = base64_decode($sanitizedData);
             $decodedMessage=secure($decodedMessage);
             $emailResponse=$userObj->addEmail($userID,$from,$subject,$decodedMessage,'Inbox');
-            echo "Inbox".$emailResponse.'<br>';
             $mailCount+=1;
         }
 
@@ -219,14 +208,41 @@ $app->get("/getEmails",function(Request $request) use($app){
             $decodedMessage = base64_decode($sanitizedData);
             $decodedMessage=secure($decodedMessage);
             $emailResponse=$userObj->addEmail($userID,$to,$subject,$decodedMessage,'Sent');
-            echo "Sent".$emailResponse.'<br>';
             $mailCount+=1;
         }
-        return "DONE";
+        return $app->redirect("/dashboard");
     }
     else
     {
         return $app->redirect("/?err=AUTHENTICATION_ERROR");
+    }
+});
+$app->get("/dashboard",function() use($app){
+    if($app['session']->get("uid"))
+    {
+        return $app['twig']->render("dashboard.html.twig");
+    }
+    else
+    {
+        return $app->redirect("/");
+    }
+});
+$app->get("/matchEmails",function() use($app){
+    if($app['session']->get("uid"))
+    {
+        require("../classes/userMaster.php");
+        require("../classes/emailMaster.php");
+        $email=new emailMaster;
+        $emails=$email->matchEmails($app['session']->get("uid"));
+        if(is_array($emails))
+        {
+            return json_encode($emails);
+        }
+        return $emails;
+    }
+    else
+    {
+        return "INVALID_PARAMETERS";
     }
 });
 $app->run();

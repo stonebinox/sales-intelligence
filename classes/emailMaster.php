@@ -150,5 +150,39 @@ class emailMaster extends userMaster
             return "INVALID_USER_ID";
         }
     }
+    function matchEmails($userID)
+    {
+        $app=$this->app;
+        $userID=secure($userID);
+        userMaster::__construct($userID);
+        if($this->userValid)
+        {
+            $em="SELECT idemail_master FROM email_master WHERE stat='1' AND user_master_iduser_master='$userID'";
+            $em=$app['db']->fetchAll($em);
+            $emailArray=array();
+            foreach($em as $emailRow)
+            {
+                $emailID=$emailRow['idemail_master'];
+                $this->__construct($emailID);
+                $email=$this->getEmail();
+                if(is_array($email))
+                {
+                    array_push($emailArray,$email);
+                }
+            }
+            if(count($emailArray)>0)
+            {
+                return $emailArray;
+            }
+            else
+            {
+                return "NO_EMAILS_FOUND";
+            }
+        }
+        else
+        {
+            return "INVALID_USER_ID";
+        }
+    }
 }
 ?>

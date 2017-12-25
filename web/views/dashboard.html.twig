@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+<body ng-app="si" ng-controller="mails">
+    <br>
+    <div class="container" ng-init="emailCount=0;">
+        <h1 class="text-center">Dashboard</h1>
+        <div class="panel panel-default">
+            <div class="panel-heading">Emails ({[{emailCount}]})</div>
+            <div class="panel-body"></div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div id="myModal" class="modal fade" role="dialog"></div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div id="footer" onclick="window.location='https://twitter.com/thedustmakers';"></div>
+</body>
+{% endblock %}
