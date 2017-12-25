@@ -55,7 +55,8 @@ $app->get("/auth",function() use($app){
     $client->setDeveloperKey("AIzaSyDHDuBK9PYzXHk_0EMeZy4FdgZd32_Rq1U");
     $client->addScope("https://www.googleapis.com/auth/gmail.readonly");
     $auth_url = $client->createAuthUrl();
-    return header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
+    // return header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
+    return $app->redirect($auth_url);
 });
 $app->get("/getEmails",function(Request $request) use($app){
     if($request->get("code"))
@@ -126,6 +127,10 @@ $app->get("/getEmails",function(Request $request) use($app){
                 $from=ltrim($from,'<');
                 $from=rtrim($from,'>');
                 $emailerName=trim(strrev($e[1]));
+            }
+            else
+            {
+                $emailerName=$from;
             }
             $pos=NULL;
             for($i=0;$i<count($headers);$i++)
