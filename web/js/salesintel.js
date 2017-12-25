@@ -86,7 +86,7 @@ app.controller("mails",function($scope,$compile,$http){
                 var other=email.from_email;
                 var subject=email.email_subject;
                 var inboundCount=email.inbound_count;
-                text+='<tr><td>'+other+'</td><td>'+subject+'</td><td>'+inboundCount+'</td><td><div class="btn-group"><button type="button" class="btn btn-primary">Send email</button><button type="button" class="btn btn-default">Read latest email</button></div></td></tr>';
+                text+='<tr><td>'+other+'</td><td>'+subject+'</td><td>'+inboundCount+'</td><td><div class="btn-group"><button type="button" class="btn btn-primary btn-sm">Send email</button><button type="button" class="btn btn-default btn-sm">Read latest email</button></div></td></tr>';
             }
             text+='</tbody></table>';
             $(".panel-body").html(text);
