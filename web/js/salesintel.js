@@ -96,12 +96,11 @@ app.controller("mails",function($scope,$compile,$http){
                 var pos=null;
                 for(var j=0;j<sorted.length;j++){
                     var sort=sorted[j];
-                    if(sort.idemail_master==emailID){
+                    if(sort.from_email==otherEmail){
                         pos=j;
                         break;
                     }
                 }
-                console.log(pos);
                 if(validate(pos)){
                     var storedEmail=sorted[pos];
                     storedEmail.outbound_count=emailCount;
