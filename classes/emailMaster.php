@@ -87,7 +87,7 @@ class emailMaster extends userMaster
         if($this->userValid)
         {
             $app=$this->app;
-            $em="SELECT idemail_master FROM email_master WHERE stat='1' AND user_master_iduser_master='$userID' ORDER BY idemail_master DESC $offset,500";
+            $em="SELECT idemail_master FROM email_master WHERE stat='1' AND user_master_iduser_master='$userID' ORDER BY idemail_master DESC LIMIT $offset,500";
             $em=$app['db']->fetchAll($em);
             $emailArray=array();
             foreach($em as $email)
