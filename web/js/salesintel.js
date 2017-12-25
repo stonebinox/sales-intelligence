@@ -51,7 +51,24 @@ app.controller("mails",function($scope,$compile,$http){
                     sent.push(email);
                 }
             }
-            console.log(inbox,sent);
+            for(var i=0;i<inbox.length;i++){
+                var email=inbox[i];
+                var emailCount=0;
+                var emailID=email.idemail_master;
+                var otherEmail=email.from_email;
+                for(var j=0;j<inbox.length;j++){
+                    var temp=inbox[j];
+                    if(temp.idemail_master!=emailID){
+                        var otherEmail2=temp.from_email;
+                        if(otherEmail2==otherEmail){
+                            emailCount+=1;
+                        }
+                    }
+                }
+                email.email_count=emailCount;
+                inbox[i]=email;
+            }
+            console.log(inbox);
         }
     };
 });
