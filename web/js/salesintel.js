@@ -79,14 +79,14 @@ app.controller("mails",function($scope,$compile,$http){
                     sorted.push(email);
                 }
             }
-            var text='<table class="table"><thead><tr><th>Email</th><th>Inbound</th><th>Subject</th><th>Actions</th></tr></thead><tbody>';
+            var text='<table class="table"><thead><tr><th width="25%">Email</th><th width="25%">Inbound</th><th width="25%">Subject</th><th width="25%">Actions</th></tr></thead><tbody>';
             $scope.emailCount=sorted.length;
             for(var i=0;i<sorted.length;i++){
                 var email=sorted[i];
                 var other=email.from_email;
                 var subject=email.email_subject;
                 var inboundCount=email.inbound_count;
-                text+='<tr><td>'+other+'</td><td>'+subject+'</td><td>'+inboundCount+'</td><td><div class="btn-group"><button type="button" class="btn btn-primary btn-sm">Send email</button><button type="button" class="btn btn-default btn-sm">Read latest email</button></div></td></tr>';
+                text+='<tr><td width="25%">'+other+'</td><td width="25%">'+subject+'</td><td width="25%">'+inboundCount+'</td><td width="25%"><div class="btn-group"><button type="button" class="btn btn-primary btn-sm">Send email</button><button type="button" class="btn btn-default btn-sm">Read latest email</button></div></td></tr>';
             }
             text+='</tbody></table>';
             $(".panel-body").html(text);
