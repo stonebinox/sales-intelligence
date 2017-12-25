@@ -66,6 +66,7 @@ app.controller("mails",function($scope,$compile,$http){
                     }
                 }
                 email.inbound_count=emailCount;
+                email.outbound_count=0;
                 var pos=null;
                 for(var j=0;j<sorted.length;j++){
                     var sort=sorted[j];
@@ -101,6 +102,7 @@ app.controller("mails",function($scope,$compile,$http){
                         break;
                     }
                 }
+                console.log(pos);
                 if(validate(pos)){
                     var storedEmail=sorted[pos];
                     storedEmail.outbound_count=emailCount;
