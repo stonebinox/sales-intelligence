@@ -80,6 +80,7 @@ app.controller("mails",function($scope,$compile,$http){
                 }
             }
             var text='<table class="table"><thead><tr><th>Email</th><th>Inbound</th><th>Subject</th><th>Actions</th></tr></thead><tbody>';
+            $scope.emailCount=sorted.length;
             for(var i=0;i<sorted.length;i++){
                 var email=sorted[i];
                 var other=email.from_email;
