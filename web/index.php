@@ -186,6 +186,11 @@ $app->get("/getEmails",function(Request $request) use($app){
                 $to=trim(strrev($e[0]));
                 $to=ltrim($to,'<');
                 $to=rtrim($to,'>');
+                $emailerName=trim(strrev($e[1]));
+            }
+            else
+            {
+                $emailerName=$to;
             }
             $pos=NULL;
             for($i=0;$i<count($headers);$i++)
@@ -198,25 +203,26 @@ $app->get("/getEmails",function(Request $request) use($app){
                 }
             }
             $subject=$headers[$pos]->value;
-            // $count=0;
-            // foreach($headers as $headerParts)
-            // {
-            //     echo $count.') ';
-            //     echo $headerParts->name.' - ';
-            //     echo $headerParts->value;
-            //     echo '<br>';
-            //     $count+=1;
-            // }
+            $count=0;
+            foreach($headers as $headerParts)
+            {
+                echo $count.') ';
+                echo $headerParts->name.' - ';
+                echo $headerParts->value;
+                echo '<br>';
+                $count+=1;
+            }
             $parts = $content->getPayload()->getParts();
             $body = $parts[0]['body'];
             $rawData = $body->data;
             $sanitizedData = strtr($rawData,'-_', '+/');
             $decodedMessage = base64_decode($sanitizedData);
             $decodedMessage=secure($decodedMessage);
-            $emailResponse=$userObj->addEmail($userID,$to,$subject,$decodedMessage,'Sent');
+            $emailResponse=$userObj->addEmail($userID,$to,$subject,$decodedMessage,'Sent',$emailerName);
             $mailCount+=1;
         }
-        return $app->redirect("/dashboard");
+        // return $app->redirect("/dashboard");
+        return "DONE";
     }
     else
     {
