@@ -66,7 +66,7 @@ app.controller("mails",function($scope,$compile,$http){
                         }
                     }
                 }
-                email.email_count=emailCount;
+                email.inbound_count=emailCount;
                 var pos=null;
                 for(var j=0;j<sorted.length;j++){
                     var sort=sorted[j];
@@ -79,7 +79,16 @@ app.controller("mails",function($scope,$compile,$http){
                     sorted.push(email);
                 }
             }
-            console.log(sorted);
+            var text='<table class="table"><thead><tr><th>Email</th><th>Inbound</th><th>Subject</th><th>Actions</th></tr></thead><tbody>';
+            for(var i=0;i<sorted.length;i++){
+                var email=sorted[i];
+                var other=email.from_email;
+                var subject=email.email_subject;
+                var inboundCount=email.inbound_count;
+                text+='<tr><td>'+other+'</td><td>'+subject+'</td><td>'+inboundCount+'</td><td><div class="btn-group"><button type="button" class="btn btn-primary">Send email</button><button type="button" class="btn btn-default">Read latest email</button></div></td></tr>';
+            }
+            text+='</tbody></table>';
+            $(".panel-body").html(text);
         }
     };
 });
