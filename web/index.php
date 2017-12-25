@@ -154,7 +154,7 @@ $app->get("/getEmails",function(Request $request) use($app){
             $decodedMessage = base64_decode($sanitizedData);
             $decodedMessage=secure($decodedMessage);
             $emailResponse=$userObj->addEmail($userID,$from,$subject,$decodedMessage,'Inbox');
-            echo $emailResponse;
+            echo "Inbox".$emailResponse.'<br>';
             $mailCount+=1;
         }
 
@@ -173,24 +173,53 @@ $app->get("/getEmails",function(Request $request) use($app){
             $content=$service->users_messages->get('me',$messageID, $optParamsGet);
             $messagePayload = $content->getPayload();
             $headers = $messagePayload->getHeaders();
-            
-            $count=0;
-            foreach($headers as $headerParts)
+            $pos=NULL;
+            for($i=0;$i<count($headers);$i++)
             {
-                echo $count.') ';
-                echo $headerParts->name.' - ';
-                echo $headerParts->value;
-                echo '<br>';
-                $count+=1;
+                $headerParts=$headers[$i];
+                if($headerParts->name=="To")
+                {
+                    $pos=$i;
+                    break;
+                }
             }
+            $to=$headers[$pos]->value;
+            if(strpos($to,'<')!==false)
+            {
+                $rev=strrev($to);
+                $e=explode(" ",$rev);
+                $to=trim(strrev($e[0]));
+                $to=ltrim($to,'<');
+                $to=rtrim($to,'>');
+            }
+            $pos=NULL;
+            for($i=0;$i<count($headers);$i++)
+            {
+                $headerParts=$headers[$i];
+                if($headerParts->name=="Subject")
+                {
+                    $pos=$i;
+                    break;
+                }
+            }
+            $subject=$headers[$pos]->value;
+            // $count=0;
+            // foreach($headers as $headerParts)
+            // {
+            //     echo $count.') ';
+            //     echo $headerParts->name.' - ';
+            //     echo $headerParts->value;
+            //     echo '<br>';
+            //     $count+=1;
+            // }
             $parts = $content->getPayload()->getParts();
             $body = $parts[0]['body'];
             $rawData = $body->data;
             $sanitizedData = strtr($rawData,'-_', '+/');
             $decodedMessage = base64_decode($sanitizedData);
             $decodedMessage=secure($decodedMessage);
-            // $emailResponse=$userObj->addEmail($userID,$from,$subject,$decodedMessage,'Inbox');
-            // echo $emailResponse;
+            $emailResponse=$userObj->addEmail($userID,$to,$subject,$decodedMessage,'Sent');
+            echo "Sent".$emailResponse.'<br>';
             $mailCount+=1;
         }
         return "DONE";
