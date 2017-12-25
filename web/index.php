@@ -227,7 +227,7 @@ $app->get("/dashboard",function() use($app){
         return $app->redirect("/");
     }
 });
-$app->get("/getEmails",function() use($app){
+$app->get("/emails",function() use($app){
     if($app['session']->get("uid"))
     {
         require("../classes/userMaster.php");

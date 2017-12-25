@@ -8,7 +8,7 @@ app.controller("mails",function($scope,$compile,$http){
     $scope.user_id=null;
     $scope.getEmails=function(){
         $(".panel-body").html('<p class="text-center"><img src="images/ripple.gif" border=0 alt="Loading" width=30 height=30></p>');
-        $http.get("getEmails")
+        $http.get("emails")
         .then(function success(response){
             response=response.data;
             console.log(response);
@@ -38,7 +38,7 @@ app.controller("mails",function($scope,$compile,$http){
     };
     $scope.matchEmails=function(){
         if(validate($scope.emails)){
-            
+
         }
     };
 });
