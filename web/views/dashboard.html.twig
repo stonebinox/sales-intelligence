@@ -2,7 +2,7 @@
 {% block content %}
 <body ng-app="si" ng-controller="mails">
     <br>
-    <div class="container" ng-init="emailCount=0;">
+    <div class="container" ng-init="emailCount=0;getEmails();">
         <h1 class="text-center">Dashboard</h1>
         <div class="panel panel-default">
             <div class="panel-heading">Emails ({[{emailCount}]})</div>

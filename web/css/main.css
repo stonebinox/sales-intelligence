@@ -3,7 +3,7 @@
 	src:url(HelveticaNarrow.ttf);
 }
 body{
-    /* place background here */
+    background: url(../images/doodles.png);
 }
 h1{
     font-family: Narrow, Arial, Helvetica, sans-serif;

@@ -6,9 +6,9 @@ app.controller("mails",function($scope,$compile,$http){
     $scope.emails=[];
     $scope.emailCount=0;
     $scope.user_id=null;
-    $scope.matchMails=function(){
+    $scope.getEmails=function(){
         $(".panel-body").html('<p class="text-center"><img src="images/ripple.gif" border=0 alt="Loading" width=30 height=30></p>');
-        $http.get("matchMails")
+        $http.get("getEmails")
         .then(function success(response){
             response=response.data;
             console.log(response);
@@ -16,6 +16,7 @@ app.controller("mails",function($scope,$compile,$http){
             if(typeof response=="object"){
                 $scope.emails=response;
                 $scope.emailCount=$scope.emails.length;
+                $scope.matchEmails();
             }
             else{
                 response=$.trim(response);
@@ -34,5 +35,10 @@ app.controller("mails",function($scope,$compile,$http){
             console.log(response);
             messageBox("Problem","Something went wrong while fetching your data. Please try again later.");
         });
+    };
+    $scope.matchEmails=function(){
+        if(validate($scope.emails)){
+            
+        }
     };
 });

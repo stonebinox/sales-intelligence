@@ -227,13 +227,13 @@ $app->get("/dashboard",function() use($app){
         return $app->redirect("/");
     }
 });
-$app->get("/matchEmails",function() use($app){
+$app->get("/getEmails",function() use($app){
     if($app['session']->get("uid"))
     {
         require("../classes/userMaster.php");
         require("../classes/emailMaster.php");
         $email=new emailMaster;
-        $emails=$email->matchEmails($app['session']->get("uid"));
+        $emails=$email->getEmails($app['session']->get("uid"));
         if(is_array($emails))
         {
             return json_encode($emails);
