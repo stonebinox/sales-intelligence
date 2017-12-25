@@ -152,5 +152,64 @@ class emailMaster extends userMaster
             return "INVALID_USER_ID";
         }
     }
+    function getEmailUser()
+    {
+        if($this->emailValid)
+        {
+            $app=$this->app;
+            $emailID=$this->email_id;
+            $em="SELECT user_master_iduser_master FROM email_master WHERE idemail_master='$emailID'";
+            $em=$app['db']->fetchAssoc($em);
+            if(validate($em))
+            {
+                return $em['user_master_iduser_master'];
+            }
+            else
+            {
+                return "INVALID_EMAIL_ID";
+            }
+        }
+        else
+        {
+            return "INVALID_EMAIL_ID";
+        }
+    }
+    function sendEmail($message)
+    {
+        if($this->emailValid)
+        {
+            $app=$this->app;
+            $emailID=$this->email_id;
+            $userID=$this->getEmailUser();
+            userMaster::__construct($userID);
+            $userEmail=userMaster::getEmailID();
+            $message=trim($message);
+            if(validate($message))
+            {
+                $client = new Google_Client();
+                $client->setAuthConfig('client_secret.json');
+                $client->setAccessType("offline");        // offline access
+                $client->setIncludeGrantedScopes(true);   // incremental auth
+                $client->setDeveloperKey("AIzaSyDHDuBK9PYzXHk_0EMeZy4FdgZd32_Rq1U");
+                $client->authenticate($app['session']->get("code"));
+                $client->addScope("https://www.googleapis.com/auth/gmail.send");
+                $service = new Google_Service_Gmail($client);
+                try {
+                    $messageResponse = $service->users_messages->send($userEmail, $message);
+                    return "EMAIL_SENT";
+                } catch (Exception $e) {
+                    return "EMAIL_ERROR";
+                }
+            }
+            else
+            {
+                return "INVALID_MESSAGE";
+            }
+        }
+        else
+        {
+            return "INVALID_EMAIL_ID";
+        }
+    }
 }
 ?>

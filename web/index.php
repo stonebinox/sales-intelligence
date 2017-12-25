@@ -54,6 +54,7 @@ $app->get("/auth",function() use($app){
     $client->setIncludeGrantedScopes(true);   // incremental auth
     $client->setDeveloperKey("AIzaSyDHDuBK9PYzXHk_0EMeZy4FdgZd32_Rq1U");
     $client->addScope("https://www.googleapis.com/auth/gmail.readonly");
+    $client->addScope("https://www.googleapis.com/auth/gmail.send");
     $auth_url = $client->createAuthUrl();
     // return header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
     return $app->redirect($auth_url);
@@ -70,6 +71,7 @@ $app->get("/getEmails",function(Request $request) use($app){
         $client->setIncludeGrantedScopes(true);   // incremental auth
         $client->setDeveloperKey("AIzaSyDHDuBK9PYzXHk_0EMeZy4FdgZd32_Rq1U");
         $client->authenticate($request->get("code"));
+        $app['session']->set("code",$request->get("code"));
         $access_token = $client->getAccessToken();
         $service = new Google_Service_Gmail($client);
         $user = 'me';
@@ -308,6 +310,27 @@ $app->get("/getAuthStatus",function() use($app){
     else
     {
         return "USER_NOT_AUTHORIZED";
+    }
+});
+$app->post("/sendEmail",function(Request $request) use($app){
+    if($app['session']->get("uid"))
+    {
+        require("../classes/userMaster.php");
+        require("../classes/emailMaster.php");
+        $email=new emailMaster($request->get("email_id"));
+        $response=$email->sendEmail($request->get("message"));
+        if($response=="EMAIL_SENT")
+        {
+            return $app->redirect("/dashboard?suc=EMAIL_SENT");
+        }
+        else
+        {
+            return $app->redirect("/dashboard?err=".$response);
+        }
+    }
+    else
+    {
+        return $app->redirect("/?err=USER_NOT_AUTHORIZED");
     }
 });
 $app->run();

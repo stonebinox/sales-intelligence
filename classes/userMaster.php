@@ -88,5 +88,27 @@ class userMaster
             return "INVALID_EMAIL_ID";
         }
     }
+    function getEmailID()
+    {
+        if($this->userValid)
+        {
+            $app=$this->app;
+            $userID=$this->user_id;
+            $um="SELECT user_email FROM user_master WHERE iduser_master='$userID'";
+            $um=$app['db']->fetchAssoc($um);
+            if(validate($um))
+            {
+                return $um['user_email'];
+            }
+            else
+            {
+                return "INVALID_USER_ID";
+            }
+        }
+        else
+        {
+            return "INVALID_USER_ID";
+        }
+    }
 }
 ?>

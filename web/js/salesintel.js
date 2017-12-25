@@ -131,7 +131,7 @@ app.controller("mails",function($scope,$compile,$http){
                 if(!validate(fromName)){
                     fromName=other;
                 }
-                text+='<tr><td>'+fromName+'</td><td>'+other+'</td><td>'+subject+'</td><td>'+inboundCount+'</td><td>'+outboundCount+'</td><td>'+emailDate+'</td><td><div class="btn-group"><button type="button" class="btn btn-primary btn-xs">Send email</button><button type="button" ng-click="showEmailContent('+emailID+')" class="btn btn-default btn-xs">Read latest email</button></div></td></tr>';
+                text+='<tr><td>'+fromName+'</td><td>'+other+'</td><td>'+subject+'</td><td>'+inboundCount+'</td><td>'+outboundCount+'</td><td>'+emailDate+'</td><td><div class="btn-group"><button type="button" class="btn btn-primary btn-xs" ng-click="showEmailForm('+emailID+')">Send email</button><button type="button" ng-click="showEmailContent('+emailID+')" class="btn btn-default btn-xs">Read latest email</button></div></td></tr>';
             }
             text+='</tbody></table>';
             $(".panel-body").html(text);
@@ -153,6 +153,7 @@ app.controller("mails",function($scope,$compile,$http){
                 var email=emails[pos];
                 var content=$.trim(nl2br(stripslashes(email.email_body)));
                 if(validate(content)){
+                    content=_.unescape(content);
                     messageBox("Email Content",content);
                 }
                 else{
@@ -214,4 +215,19 @@ app.controller("mails",function($scope,$compile,$http){
             messageBox("Problem","Something went wrong while loading session information. Please try again later.");
         });
     }; 
+    $scope.showEmailForm=function(emailID){
+        if($scope.emails.length>0){
+            var emails=$scope.emails;
+            for(var i=0;i<emails.length;i++){
+                var email=emails[i];
+                if(email.idemail_master==emailID){
+                    break;
+                }
+            }
+            var email=emails[i];
+            var emailUser=email.from_email;
+            var text='<form method="post" action="sendEmail"><div class="form-group"><label for="email">Email ID</label><p class="form-control-static">'+emailUser+'</p></div><div class="form-group"><label for="message">Message</label><textarea name="message" id="message" class="form-control" placeholder="Enter a message here"></textarea></div><button type="button" class="btn btn-primary">Send</button></form>';
+            messageBox("Send Email",text);
+        }
+    };
 });
