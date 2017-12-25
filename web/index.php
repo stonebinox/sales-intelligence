@@ -73,7 +73,7 @@ $app->get("/getEmails",function(Request $request) use($app){
         $service = new Google_Service_Gmail($client);
         $user = 'me';
         $optParams = [];
-        $optParams['maxResults'] = 100; 
+        $optParams['maxResults'] = 10; 
         $optParams['labelIds'] = 'INBOX'; // Only show messages in Inbox
         $messages = $service->users_messages->listUsersMessages('me',$optParams);
         $list = $messages->getMessages();
@@ -155,6 +155,42 @@ $app->get("/getEmails",function(Request $request) use($app){
             $decodedMessage=secure($decodedMessage);
             $emailResponse=$userObj->addEmail($userID,$from,$subject,$decodedMessage,'Inbox');
             echo $emailResponse;
+            $mailCount+=1;
+        }
+
+        $user = 'me';
+        $optParams = [];
+        $optParams['maxResults'] = 10; 
+        $optParams['labelIds'] = 'SENT'; // Only show messages in Sent
+        $messages = $service->users_messages->listUsersMessages('me',$optParams);
+        $list = $messages->getMessages();
+        $mailCount=0;
+        foreach($list as $listItem)
+        {
+            $messageID=$listItem->getId();
+            $optParamsGet = [];
+            $optParamsGet['format'] = 'full'; // Display message in payload
+            $content=$service->users_messages->get('me',$messageID, $optParamsGet);
+            $messagePayload = $content->getPayload();
+            $headers = $messagePayload->getHeaders();
+            
+            $count=0;
+            foreach($headers as $headerParts)
+            {
+                echo $count.') ';
+                echo $headerParts->name.' - ';
+                echo $headerParts->value;
+                echo '<br>';
+                $count+=1;
+            }
+            $parts = $content->getPayload()->getParts();
+            $body = $parts[0]['body'];
+            $rawData = $body->data;
+            $sanitizedData = strtr($rawData,'-_', '+/');
+            $decodedMessage = base64_decode($sanitizedData);
+            $decodedMessage=secure($decodedMessage);
+            // $emailResponse=$userObj->addEmail($userID,$from,$subject,$decodedMessage,'Inbox');
+            // echo $emailResponse;
             $mailCount+=1;
         }
         return "DONE";
