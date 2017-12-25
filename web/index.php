@@ -125,6 +125,7 @@ $app->get("/getEmails",function(Request $request) use($app){
                 $from=trim(strrev($e[0]));
                 $from=ltrim($from,'<');
                 $from=rtrim($from,'>');
+                $emailerName=trim(strrev($e[1]));
             }
             $pos=NULL;
             for($i=0;$i<count($headers);$i++)
@@ -143,7 +144,7 @@ $app->get("/getEmails",function(Request $request) use($app){
             $sanitizedData = strtr($rawData,'-_', '+/');
             $decodedMessage = base64_decode($sanitizedData);
             $decodedMessage=secure($decodedMessage);
-            $emailResponse=$userObj->addEmail($userID,$from,$subject,$decodedMessage,'Inbox');
+            $emailResponse=$userObj->addEmail($userID,$from,$subject,$decodedMessage,'Inbox',$emailerName);
             $mailCount+=1;
         }
 

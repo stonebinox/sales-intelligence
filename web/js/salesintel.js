@@ -108,7 +108,7 @@ app.controller("mails",function($scope,$compile,$http){
                     sorted[pos]=storedEmail;
                 }
             }
-            var text='<table class="table"><thead><tr><th width="20%">Email</th><th width="20%">Subject</th><th width="20%">Inbound</th><td width="20%">Outbound</th><th width="20%">Actions</th></tr></thead><tbody>';
+            var text='<table class="table"><thead><tr><th width="20%">Email</th><th width="20%">Subject</th><th width="20%">Inbound</th><th width="20%">Outbound</th><th width="20%">Actions</th></tr></thead><tbody>';
             $scope.emailCount=sorted.length;
             console.log(sorted);
             for(var i=0;i<sorted.length;i++){
@@ -117,7 +117,8 @@ app.controller("mails",function($scope,$compile,$http){
                 var subject=email.email_subject;
                 var inboundCount=email.inbound_count;
                 var outboundCount=email.outbound_count;
-                text+='<tr><td width="20%">'+other+'</td><td width="20%">'+subject+'</td><td width="20%">'+inboundCount+'</td><td width="20%">'+outboundCount+'</td><td width="20%"><div class="btn-group"><button type="button" class="btn btn-primary btn-sm">Send email</button><button type="button" class="btn btn-default btn-sm">Read latest email</button></div></td></tr>';
+                var emailID=email.idemail_master;
+                text+='<tr><td width="20%">'+other+'</td><td width="20%">'+subject+'</td><td width="20%">'+inboundCount+'</td><td width="20%">'+outboundCount+'</td><td width="20%"><div class="btn-group"><button type="button" class="btn btn-primary btn-xs">Send email</button><button type="button" class="btn btn-default btn-xs">Read latest email</button></div></td></tr>';
             }
             text+='</tbody></table>';
             $(".panel-body").html(text);
