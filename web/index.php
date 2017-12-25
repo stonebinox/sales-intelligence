@@ -126,7 +126,13 @@ $app->get("/getEmails",function(Request $request) use($app){
                 $from=trim(strrev($e[0]));
                 $from=ltrim($from,'<');
                 $from=rtrim($from,'>');
-                $emailerName=trim(strrev($e[1]));
+                $pieces=[];
+                for($i=1;$i<count($e);$i++)
+                {
+                    array_push($pieces,$e[$i]);
+                }
+                $emailerName=trim(strrev(implode(" ",$pieces)));
+                // $emailerName=trim(strrev($e[1]));
             }
             else
             {
@@ -196,7 +202,13 @@ $app->get("/getEmails",function(Request $request) use($app){
                 $to=trim(strrev($e[0]));
                 $to=ltrim($to,'<');
                 $to=rtrim($to,'>');
-                $emailerName=trim(strrev($e[1]));
+                // $emailerName=trim(strrev($e[1]));
+                $pieces=[];
+                for($i=1;$i<count($e);$i++)
+                {
+                    array_push($pieces,$e[$i]);
+                }
+                $emailerName=trim(strrev(implode(" ",$pieces)));
             }
             else
             {
